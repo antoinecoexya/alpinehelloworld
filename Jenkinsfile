@@ -6,7 +6,7 @@ pipeline {
         STAGING = "antoine-staging"
         PRODUCTION = "antoine-prod"
         DOCKERHUB_ID = "antoinecoexya"
-        DOCKERHUB_PASSWORD = credentials('dockerhub')
+        DOCKERHUB_PASSWORD = credentials('213e1592-341f-47c1-b46f-956ec981b562')
         APP_NAME = "ulrich"
         STG_API_ENDPOINT = "54.146.60.178:1993"
         STG_APP_ENDPOINT = "54.146.60.178:8080"
