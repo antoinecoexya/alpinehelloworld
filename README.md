@@ -1,4 +1,3 @@
 # alpinehelloworld
 An Alpine-based Docker example
-Test
-Test 2
+[![Build Status](http://54.146.60.178:8080/buildStatus/icon?job=deployment)](http://54.146.60.178/:8080/job/deployment/)
