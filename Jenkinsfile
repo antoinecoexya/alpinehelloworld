@@ -7,7 +7,7 @@ pipeline {
         PRODUCTION = "antoine-prod"
         DOCKERHUB_ID = "antoinecoexya"
         DOCKERHUB_PASSWORD = credentials('213e1592-341f-47c1-b46f-956ec981b562')
-        APP_NAME = "ulrich"
+        APP_NAME = "antoine"
         STG_API_ENDPOINT = "54.146.60.178:1993"
         STG_APP_ENDPOINT = "54.146.60.178:8000"
         PROD_API_ENDPOINT = "54.146.60.178:1993"
