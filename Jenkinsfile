@@ -6,13 +6,13 @@ pipeline {
         STAGING = "antoine-staging"
         PRODUCTION = "antoine-prod"
         DOCKERHUB_ID = "antoinecoexya"
-        DOCKERHUB_PASSWORD = credentials('dockerhub_password')
-        APP_NAME = "antoine"
+        DOCKERHUB_PASSWORD = credentials('Swordgus12$')
+        APP_NAME = "ulrich"
         STG_API_ENDPOINT = "54.146.60.178:1993"
         STG_APP_ENDPOINT = "54.146.60.178:8080"
         PROD_API_ENDPOINT = "54.146.60.178:1993"
-        PROD_APP_ENDPOINT = "54.146.60.178:80"
-        INTERNAL_PORT = "80"
+        PROD_APP_ENDPOINT = "54.146.60.178"
+        INTERNAL_PORT = "5000"
         EXTERNAL_PORT = "${PORT_EXPOSED}"
         CONTAINER_IMAGE = "${DOCKERHUB_ID}/${IMAGE_NAME}:${IMAGE_TAG}"
     }
@@ -22,7 +22,7 @@ pipeline {
            agent any
            steps {
               script {
-                sh 'docker build -t ${DOCKERHUB_ID}/${IMAGE_NAME}:${IMAGE_TAG} .'
+                sh 'docker build -t ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG .'
               }
            }
        }
@@ -31,7 +31,10 @@ pipeline {
           steps {
             script {
               sh '''
-
+                  echo "Cleaning existing container if exist"
+                  docker ps -a | grep -i $IMAGE_NAME && docker rm -f $IMAGE_NAME
+                  docker run --name $IMAGE_NAME -d -p $APP_EXPOSED_PORT:$INTERNAL_PORT  -e PORT=$INTERNAL_PORT ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG
+                  sleep 5
               '''
              }
           }
@@ -41,7 +44,7 @@ pipeline {
            steps {
               script {
                 sh '''
-                   
+                   curl -v 172.17.0.1:$APP_EXPOSED_PORT | grep -q "Hello world!"
                 '''
               }
            }
@@ -51,7 +54,8 @@ pipeline {
           steps {
              script {
                sh '''
-
+                   docker stop $IMAGE_NAME
+                   docker rm $IMAGE_NAME
                '''
              }
           }
@@ -62,7 +66,8 @@ pipeline {
           steps {
              script {
                sh '''
-
+                   echo $DOCKERHUB_PASSWORD_PSW | docker login -u $DOCKERHUB_PASSWORD_USR --password-stdin
+                   docker push ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG
                '''
              }
           }
@@ -73,7 +78,7 @@ pipeline {
       steps {
           script {
             sh """
-              echo  {\\"your_name\\":\\"${APP_NAME}\\",\\"container_image\\":\\"${CONTAINER_IMAGE}\\", \\"external_port\\":\\"${EXTERNAL_PORT}80\\", \\"internal_port\\":\\"${INTERNAL_PORT}\\"}  > data.json 
+              echo  {\\"your_name\\":\\"${APP_NAME}\\",\\"container_image\\":\\"${CONTAINER_IMAGE}\\", \\"external_port\\":\\"${EXTERNAL_PORT}00\\", \\"internal_port\\":\\"${INTERNAL_PORT}\\"}  > data.json 
               curl -v -X POST http://${STG_API_ENDPOINT}/staging -H 'Content-Type: application/json'  --data-binary @data.json  2>&1 | grep 200
             """
           }
