@@ -3,8 +3,8 @@ pipeline {
         IMAGE_NAME = "alpinehelloworld"
         APP_EXPOSED_PORT = "80"
         IMAGE_TAG = "latest"
-        STAGING = "antoine-staging"
-        PRODUCTION = "antoine-prod"
+        STAGING = "antoine"
+        PRODUCTION = "antoine"
         DOCKERHUB_ID = "antoinecoexya"
         DOCKERHUB_PASSWORD = credentials('213e1592-341f-47c1-b46f-956ec981b562')
         APP_NAME = "antoine"
